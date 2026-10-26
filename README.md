@@ -2,7 +2,7 @@
 
 一个手机优先的治愈系小游戏集合网站。领养橘色狸花猫或焦糖棕腊肠狗，为它起名，通过小游戏领取零食与清水，一起慢慢长大。
 
-在线游玩：https://rxl333.github.io/jihong-game-hut/
+在线游玩：[打开鸡泓的游戏小屋](https://rxl333.github.io/jihong-game-hut/)。
 
 ## 本地打开
 
