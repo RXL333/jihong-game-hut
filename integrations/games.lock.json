@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "id": "kart",
+      "name": "晴空卡丁车",
+      "repository": "https://github.com/RXL333/sunny-kart.git",
+      "revision": "430bf648dbea9d114fe4fa7578a4daf0a8f06a1c",
+      "entry": "src/main.js",
+      "cover": "docs/screenshots/v2-driving.jpg"
+    },
+    {
+      "id": "watermelon",
+      "name": "合成大西瓜",
+      "repository": "https://github.com/RXL333/watermelon-garden.git",
+      "revision": "f4f6721c04e317cf8ded9653c4979981190974e6",
+      "entry": "src/main.ts",
+      "cover": "public/assets/fruit-atlas-v2.png"
+    },
+    {
+      "id": "meadow",
+      "name": "羊了个羊",
+      "repository": "https://github.com/RXL333/meadow-match.git",
+      "revision": "e35dd89d03a332b79cc3d15e607633a661fe0b5e",
+      "entry": "src/main.ts",
+      "cover": "public/assets/meadow.webp"
+    }
+  ]
+}

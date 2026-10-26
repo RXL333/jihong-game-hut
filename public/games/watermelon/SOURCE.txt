@@ -1,0 +1,4 @@
+合成大西瓜
+https://github.com/RXL333/watermelon-garden.git
+Revision: f4f6721c04e317cf8ded9653c4979981190974e6
+小屋集成副本：只加入成绩回传与暂停适配。

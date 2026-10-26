@@ -1,0 +1,4 @@
+晴空卡丁车
+https://github.com/RXL333/sunny-kart.git
+Revision: 430bf648dbea9d114fe4fa7578a4daf0a8f06a1c
+小屋集成副本：只加入成绩回传与暂停适配。

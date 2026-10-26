@@ -1,0 +1,272 @@
+{
+  "cat-01": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 315,
+        "baseline": 303
+      },
+      {
+        "top": 315,
+        "bottom": 550,
+        "baseline": 534
+      },
+      {
+        "top": 550,
+        "bottom": 730,
+        "baseline": 720
+      },
+      {
+        "top": 730,
+        "bottom": 1024,
+        "baseline": 970
+      }
+    ]
+  },
+  "cat-02": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 255,
+        "baseline": 249
+      },
+      {
+        "top": 255,
+        "bottom": 504,
+        "baseline": 499
+      },
+      {
+        "top": 504,
+        "bottom": 722,
+        "baseline": 721
+      },
+      {
+        "top": 722,
+        "bottom": 1024,
+        "baseline": 982
+      }
+    ]
+  },
+  "cat-03": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 291,
+        "baseline": 286
+      },
+      {
+        "top": 291,
+        "bottom": 559,
+        "baseline": 558
+      },
+      {
+        "top": 559,
+        "bottom": 806,
+        "baseline": 802
+      },
+      {
+        "top": 806,
+        "bottom": 1024,
+        "baseline": 988
+      }
+    ]
+  },
+  "cat-04": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 269,
+        "baseline": 266
+      },
+      {
+        "top": 269,
+        "bottom": 534,
+        "baseline": 530
+      },
+      {
+        "top": 534,
+        "bottom": 777,
+        "baseline": 775
+      },
+      {
+        "top": 777,
+        "bottom": 1024,
+        "baseline": 997
+      }
+    ]
+  },
+  "cat-05": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 243,
+        "baseline": 240
+      },
+      {
+        "top": 243,
+        "bottom": 488,
+        "baseline": 487
+      },
+      {
+        "top": 488,
+        "bottom": 703,
+        "baseline": 702
+      },
+      {
+        "top": 703,
+        "bottom": 1024,
+        "baseline": 986
+      }
+    ]
+  },
+  "dog-01": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 322,
+        "baseline": 303
+      },
+      {
+        "top": 322,
+        "bottom": 537,
+        "baseline": 505
+      },
+      {
+        "top": 537,
+        "bottom": 723,
+        "baseline": 705
+      },
+      {
+        "top": 723,
+        "bottom": 1024,
+        "baseline": 961
+      }
+    ]
+  },
+  "dog-02": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 266,
+        "baseline": 264
+      },
+      {
+        "top": 266,
+        "bottom": 505,
+        "baseline": 502
+      },
+      {
+        "top": 505,
+        "bottom": 726,
+        "baseline": 722
+      },
+      {
+        "top": 726,
+        "bottom": 1024,
+        "baseline": 983
+      }
+    ]
+  },
+  "dog-03": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 279,
+        "baseline": 271
+      },
+      {
+        "top": 279,
+        "bottom": 525,
+        "baseline": 522
+      },
+      {
+        "top": 525,
+        "bottom": 793,
+        "baseline": 775
+      },
+      {
+        "top": 793,
+        "bottom": 1024,
+        "baseline": 972
+      }
+    ]
+  },
+  "dog-04": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 278,
+        "baseline": 270
+      },
+      {
+        "top": 278,
+        "bottom": 529,
+        "baseline": 523
+      },
+      {
+        "top": 529,
+        "bottom": 766,
+        "baseline": 757
+      },
+      {
+        "top": 766,
+        "bottom": 1024,
+        "baseline": 963
+      }
+    ]
+  },
+  "dog-05": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 6,
+    "rows": [
+      {
+        "top": 0,
+        "bottom": 266,
+        "baseline": 260
+      },
+      {
+        "top": 266,
+        "bottom": 500,
+        "baseline": 498
+      },
+      {
+        "top": 500,
+        "bottom": 738,
+        "baseline": 734
+      },
+      {
+        "top": 738,
+        "bottom": 1024,
+        "baseline": 997
+      }
+    ]
+  }
+}

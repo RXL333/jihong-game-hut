@@ -1,0 +1,23 @@
+{
+  "name": "jihong-game-hut",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "check": "tsc --noEmit",
+    "test": "node scripts/test.mjs",
+    "games:sync": "node scripts/sync-games.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@types/masonry-layout": "4.2.8",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "dependencies": {
+    "@surdeddd/liquidglass": "0.12.0",
+    "masonry-layout": "4.2.2"
+  }
+}

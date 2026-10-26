@@ -1,0 +1,280 @@
+/* Optical material is rendered by @surdeddd/liquidglass (MIT).
+   This file supplies only the app's color, spacing, typography and waterfall sizing. */
+:root {
+  color-scheme: light;
+  --ink: #344337;
+  --muted: #707e70;
+  --sage: #829673;
+  --line: #ffffff96;
+  color: var(--ink);
+  background: #edf0e8;
+}
+body { position:relative; isolation:isolate; }
+body::before {
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background-image:linear-gradient(125deg,#f2f6edc9,#fbf7e3b0 45%,#e3f2edb8),var(--room-image);
+  background-position:center; background-size:cover;
+}
+body::after {
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:radial-gradient(ellipse at 12% 13%,#eef4e99c,transparent 58%),radial-gradient(ellipse at 90% 90%,#e3f2ef75,transparent 55%);
+}
+.sidebar { inset:20px auto 20px 18px; width:203px; border:1px solid #ffffffbd; border-radius:27px; padding:29px 15px; }
+.brand { margin-left:5px; gap:10px; }
+.brand strong { font-size:20px; }
+.brand-mark { border:1px solid #ffffff75; box-shadow:inset 0 1px 1px #ffffff73,0 6px 20px #546a441a; }
+.brand small { color:#8d9c86; }
+.nav-item { border:1px solid transparent; color:#6d8068; border-radius:16px; }
+.nav-item.active { border-color:#ffffffd9; color:#426338; }
+.nav-caption,.sidebar-bottom { color:#7c8e72; }
+.sidebar-bottom small { color:#91a287; }
+.main-content { margin-left:235px; padding-top:33px; }
+.page-header h1 { color:#344537; font-weight:700; text-shadow:0 1px 0 #ffffffb3; }
+.page-header p { color:#70836f; font-size:12px; }
+.page-header .eyebrow { color:#7f9373; }
+.music-toggle,.icon-button { border-color:#ffffffb8; color:#708566; }
+.music-toggle.is-on { color:#526e48; }
+.pet-status,.panel,.game-card,.games-banner,.inventory-card,.album-summary,.adoption-card {
+  border:1px solid #ffffffe0;
+  border-radius:24px;
+}
+.room-card { border:1px solid #ffffffa6; border-radius:24px; }
+.room-label,.room-day,.room-mood,.room-hint,.pet-bubble { border:1px solid #ffffffb0; color:#5c7052; }
+.pet-species,.next-unlock,.status-foot { color:#819374; }
+.status-top .eyebrow { color:#7f9271; }
+.affection-row,.metric-label { color:#71836a; }
+.metric-label b { color:#526a4d; }
+.metric-label b small { color:#91a183; }
+.meter { background:#ffffff91; box-shadow:inset 0 1px 2px #50643d08; }
+.meter.satiety { background:#fff6dfb0; }
+.meter.hydration { background:#e3f4f2ad; }
+.meter.satiety i { background:linear-gradient(90deg,#e2bb7c,#d5a668); }
+.meter.hydration i { background:linear-gradient(90deg,#a4cfcc,#83b5b2); }
+.meter.affection i { background:linear-gradient(90deg,#dbb29d,#d39b86); }
+.status-divider { background:#ffffffb8; }
+.care-button { border:1px solid #ffffffbf; border-radius:16px; }
+.care-button.food { color:#a5824e; }
+.care-button.drink { color:#6a9690; }
+.care-button.touch { color:#b1857b; }
+.primary-button,.secondary-button,.filter-chip,.music-toggle,.icon-button,.pill {
+  border:1px solid #ffffffb3;
+}
+.primary-button { color:#426338; border-color:#ffffffdc; border-radius:15px; font-weight:650; }
+.secondary-button { color:#667f55; border-radius:14px; }
+.text-button { color:#6d875b; }
+.filter-chip { border-radius:22px; color:#738969; }
+.filter-chip.active { color:#426338; border-color:#ffffffed; font-weight:650; }
+.pill { color:#748e62; }
+.supply-strip { border:1px solid #ffffffb8; border-radius:19px; }
+.supply-strip strong { color:#637650; }
+.supply-strip p { color:#849372; }
+.supply-icon { background:#efe2c16e; color:#ac965d; border:1px solid #ffffffad; border-radius:14px; }
+.pending-strip { border:1px solid #ffffffba; border-radius:17px; }
+.section-heading .eyebrow { color:#8b9c7b; }
+.section-heading p { color:#7c8e71; }
+.section-heading h2 { color:#3e533d; }
+.game-grid { display:block; position:relative; width:100%; }
+.game-sizer,.game-card { width:calc((100% - 20px)/2); }
+.gutter-sizer { width:20px; }
+.game-sizer,.gutter-sizer { height:0; pointer-events:none; }
+.game-card {
+  margin-bottom:20px; overflow:hidden;
+  transition:box-shadow .22s; border-radius:23px;
+}
+.game-card:hover { transform:none; }
+.game-cover,.full-game-grid .game-cover { height:auto; aspect-ratio:4/3; border-radius:20px; width:calc(100% - 14px); margin:7px 7px 0; }
+.game-cover.watermelon,.full-game-grid .game-cover.watermelon { aspect-ratio:4/5; }
+.game-cover.meadow,.full-game-grid .game-cover.meadow { aspect-ratio:1; }
+.game-cover img { opacity:1; }
+.game-cover.watermelon img { object-fit:cover; object-position:center; opacity:1; }
+.game-cover::after { background:linear-gradient(180deg,#ffffff10,transparent 35%,#2d513812); border-radius:inherit; }
+.cover-tag { background:#fffef4c9; color:#687e58; border:1px solid #ffffffa3; border-radius:11px; font-size:9px; }
+.play-circle { background:#fffef5d9; color:#6a8358; border:1px solid #ffffffc2; height:34px; width:34px; }
+.game-info,.full-game-grid .game-info { padding:19px 20px 16px; }
+.game-title-row { align-items:flex-start; }
+.game-title-row h3 { font-size:17px; color:#3e553a; line-height:1.6; }
+.orientation-tag { background:#ffffff70; border:1px solid #ffffff75; color:#839572; border-radius:7px; font-size:9px; padding:4px 6px; }
+.game-info>p { color:#7d8e73; font-size:11px; line-height:1.9; margin-top:8px; }
+.card-objective { display:flex; align-items:center; gap:7px; font-size:10px; color:#889975; margin-top:14px; line-height:1.8; }
+.card-objective>.icon { width:13px; height:13px; color:#9bac84; }
+.game-card-bottom { border-top:1px solid #ffffffb5; padding-top:12px; margin-top:14px; }
+.game-reward { font-size:10px; color:#8c9778; }
+.game-card-bottom .text-button { font-size:12px; }
+.home-games .game-card:last-child { display:block; grid-column:auto; }
+.home-games .game-card:last-child .game-cover { min-height:0; height:auto; aspect-ratio:1; }
+.home-games .game-card:last-child .game-info { padding:19px 20px 16px; }
+.home-games .game-card:last-child .game-title-row h3 { font-size:17px; }
+.games-banner strong { color:#4c6944; }
+.games-banner small { color:#819773; }
+.games-banner>.pill { border-color:#ffffffbd; color:#738b60; }
+.how-it-works article { border:1px solid #ffffffb3; border-radius:21px; }
+.how-it-works article>small { color:#b5c3a8; }
+.how-it-works p { color:#839773; }
+.step-icon { background:#dce8cf66; color:#7f9b66; border:1px solid #ffffffb8; border-radius:14px; }
+.inventory-card { border-radius:24px; }
+.inventory-card p,.settings-description,.setting-row>span small,.backup-foot { color:#829473; }
+.inventory-card h2 { color:#526a45; }
+.inventory-symbol { background:#f6e7bb75; border:1px solid #ffffffc2; box-shadow:inset 0 1px 0 #ffffffbf; }
+.inventory-card.feast .inventory-symbol { background:#f1d7c275; }
+.inventory-card.water .inventory-symbol { background:#d1e9df70; }
+.inventory-count { color:#b4a371; }
+.reward-item { border-top-color:#ffffffb3; }
+.reward-item strong { color:#556f48; }
+.reward-item small { color:#879777; }
+.reward-icon { background:#e7e2be69; border:1px solid #ffffffa6; }
+.empty-state h3 { color:#6c865d; }
+.empty-state p { color:#8b9b7b; }
+.soft-tip { border:1px solid #ffffffc1; border-radius:18px; }
+.soft-tip p { color:#839471; }
+.achievement { border-color:#ffffffb8; color:#859777; }
+.achievement>span { background:#dce5cf70; border:1px solid #ffffffb0; color:#a0b18d; }
+.achievement>small { background:#e4edda75; }
+.achievement.earned { color:#a18c4e; }
+.achievement.earned>span { background:#e9dda175; color:#ae934d; }
+.album-heart { border:1px solid #ffffffbf; background:#eed1c070; }
+.album-summary p { color:#9b8f7a; }
+.action-card { border:1px solid #ffffffe0; border-radius:23px; }
+.action-card>small { color:#92a180; }
+.action-card.locked { color:#8da07a; border-style:solid; }
+.locked-paw>.icon { color:#cbd9bc9c; }
+.action-lock { background:#e0e9d7ab; border-color:#ffffffa1; color:#99ad85; }
+.diary-heading h2,.diary-list p { color:#526c49; }
+.diary-heading p,.diary-list small { color:#91a281; }
+.diary-dot { background:#e1ebd56e; border:1px solid #ffffffb5; }
+.diary-list li:not(:last-child)::before { border-left-color:#aebf9778; }
+.adoption-page { background:transparent; }
+.adoption-intro h1 { color:#3f5a3e; text-shadow:0 1px 0 #ffffffad; }
+.adoption-intro h1>span { color:#7e986a; }
+.adoption-intro>.eyebrow { color:#7b936a; }
+.adoption-intro>p { color:#7c9270; }
+.adoption-card { border-radius:30px; }
+.pet-choice { border:1px solid #ffffffc7; border-radius:21px; }
+.pet-choice.selected { border:1.5px solid #93a87ccf; }
+.pet-choice.selected::after { position:absolute; inset:0; border-radius:inherit; content:""; box-shadow:inset 0 0 0 2px #ffffff8f; pointer-events:none; }
+.pet-choice small,.local-note,.adoption-footer { color:#859b77; }
+.name-field { border:1px solid #ffffffd6; border-radius:15px; }
+.name-field input { color:#546f47; }
+.name-label { color:#758c63; }
+.name-label>span,.name-field>span { color:#94a383; }
+.dialog { border:1px solid #ffffffd1; border-radius:27px; }
+.dialog::backdrop { background:#475d3c39; }
+.dialog-head p,.action-preview p { color:#839a72; }
+.settings-content section { border-color:#ffffffa8; }
+.music-credit p { color:#8c9c7b; }
+.music-credit a { color:#6a8657; }
+.toast { border:1px solid #ffffffd6; border-radius:18px; color:#607e50; }
+.page-footer { border-top-color:#ffffffa3; color:#91a083; }
+.home-note { color:#8b9d7c; }
+.game-overlay { background:#edf0e7; }
+.game-topbar { border-bottom:1px solid #ffffffbf; }
+.game-tasks { border-left:1px solid #ffffffbf; }
+.game-tasks-content>p,.game-task-tip p { color:#8b9d7a; }
+.mission { border:1px solid #ffffffc2; border-radius:20px; }
+.mission p { color:#879c75; }
+.mission-status { color:#889c76; border-top-color:#ffffffa6; }
+.mission-done { border-color:#b2c89bce; }
+.game-task-tip { color:#94aa7e; }
+.mission-kind { color:#8ba278; }
+@media(min-width:1650px) { .main-content { margin-left:calc(235px + (100vw - 1650px)/2); } }
+@media(max-width:1200px) {
+  .sidebar { width:179px; inset:17px auto 17px 15px; padding:27px 12px; }
+  .brand strong { font-size:17px; }
+  .brand { font-size:13px; gap:8px; margin-left:3px; }
+  .brand-mark { width:39px; height:39px; }
+  .brand-mark .icon { width:24px; height:24px; }
+  .main-content { margin-left:208px; padding-left:23px; padding-right:23px; }
+  .game-info,.full-game-grid .game-info { padding:17px 17px 15px; }
+  .game-title-row h3,.home-games .game-card:last-child .game-title-row h3 { font-size:16px; }
+  .game-info>p { font-size:10px; }
+  .game-reward { font-size:9px; }
+  .home-games .game-card:last-child .game-info { padding:17px 17px 15px; }
+}
+@media(max-width:980px) {
+  .game-sizer,.game-card { width:calc((100% - 16px)/2); }
+  .gutter-sizer { width:16px; }
+  .game-card { margin-bottom:16px; }
+  .game-title-row h3,.home-games .game-card:last-child .game-title-row h3 { font-size:14px; }
+  .game-info>p { font-size:10px; }
+  .game-info,.full-game-grid .game-info,.home-games .game-card:last-child .game-info { padding:15px 14px 12px; }
+  .game-reward { font-size:8px; gap:3px; }
+  .game-reward>.icon { width:11px; height:11px; }
+  .game-card-bottom .text-button { font-size:10px; }
+  .card-objective { font-size:9px; gap:5px; margin-top:11px; }
+}
+@media(max-width:720px) {
+  body::before { background-image:linear-gradient(150deg,#eff6e7db,#fff8eac4 45%,#e6f4edba),var(--room-image); background-position:44% center; }
+  .sidebar { inset:auto 12px max(10px,env(safe-area-inset-bottom)); width:auto; height:66px; padding:7px 8px; border:1px solid #ffffffd1; border-radius:25px; }
+  .sidebar nav { height:100%; gap:3px; }
+  .nav-item { border-radius:18px; height:49px; font-size:9px; min-height:49px; gap:5px; padding:6px 1px; }
+  .nav-item>.icon { width:20px; height:20px; }
+  .main-content { margin:0; padding:20px 17px calc(102px + env(safe-area-inset-bottom)); }
+  .page-header h1 { font-size:25px; line-height:1.7; }
+  .page-header p { font-size:10px; line-height:2; }
+  .page-header .eyebrow { font-size:8px; }
+  .mobile-brand { color:#6c865a; }
+  .header-tools .music-toggle,.header-tools .icon-button { height:34px; width:34px; border-color:#ffffffce; }
+  .room-card { border-radius:24px 24px 15px 15px; }
+  .pet-status { border-radius:23px; margin-top:-5px; padding:21px 20px 16px; }
+  .care-button { border-radius:17px; }
+  .care-button strong { font-size:10px; }
+  .care-button small { font-size:8px; }
+  .status-foot { font-size:8px; }
+  .supply-strip { border-radius:19px; padding:15px 13px; gap:9px; }
+  .supply-strip p { font-size:8px; }
+  .supply-strip>.secondary-button { border-radius:12px; font-size:8px; }
+  .game-sizer,.game-card { width:calc((100% - 12px)/2); }
+  .gutter-sizer { width:12px; }
+  .game-card { border-radius:20px; margin-bottom:12px; }
+  .game-cover,.full-game-grid .game-cover { width:calc(100% - 10px); margin:5px 5px 0; border-radius:16px; height:auto; aspect-ratio:4/3; }
+  .home-games .game-card:last-child .game-cover { height:auto; min-height:0; aspect-ratio:1; }
+  .cover-tag { top:8px; left:8px; padding:4px 6px; font-size:7px; border-radius:8px; }
+  .play-circle { height:25px; width:25px; bottom:8px; right:8px; }
+  .play-circle>.icon { width:13px; height:13px; }
+  .game-info,.full-game-grid .game-info,.home-games .game-card:last-child .game-info { padding:13px 12px 10px; }
+  .game-title-row { gap:4px; flex-wrap:wrap; }
+  .game-title-row h3,.home-games .game-card:last-child .game-title-row h3 { font-size:13px; letter-spacing:0; font-weight:650; }
+  .orientation-tag { font-size:7px; padding:2px 4px; line-height:1.5; border-radius:5px; }
+  .game-info>p { font-size:9px; line-height:1.9; margin-top:7px; }
+  .card-objective { font-size:8px; line-height:1.9; gap:4px; margin-top:10px; align-items:flex-start; }
+  .card-objective>.icon { width:11px; height:11px; margin-top:2px; }
+  .game-card-bottom { gap:4px; padding-top:8px; margin-top:10px; align-items:center; flex-wrap:wrap; }
+  .game-reward { font-size:7px; gap:3px; }
+  .game-reward .icon { width:10px; height:10px; }
+  .game-reward .icon:nth-child(2) { margin-left:2px; }
+  .game-card-bottom .text-button { font-size:9px; min-height:30px; margin-left:auto; gap:1px; }
+  .game-card-bottom .text-button .icon { width:12px; height:12px; }
+  .games-banner { border-radius:23px; padding:19px 16px; }
+  .filter-row { margin:20px -2px; gap:7px; }
+  .filter-chip { padding:8px 12px; font-size:10px; min-height:38px; border-color:#ffffffd1; }
+  .inventory-card,.panel,.album-summary { border-radius:23px; }
+  .action-card { border-radius:21px; }
+  .adoption-page { padding-left:20px; padding-right:20px; }
+  .adoption-card { border-radius:26px; padding:22px 18px; }
+  .adoption-intro h1 { font-size:34px; letter-spacing:2px; }
+  .pet-choice { border-radius:19px; }
+  .pet-choice small { font-size:7px; }
+  .adoption-intro>p { font-size:10px; }
+  .dialog { border-radius:26px; }
+  .game-topbar { height:55px; min-height:55px; }
+  .game-tasks { border-radius:24px 0 0 24px; }
+  .mission { border-radius:20px; }
+  #toast-region { bottom:calc(92px + env(safe-area-inset-bottom)); }
+  .toast { border-radius:19px; }
+}
+@media(max-width:340px) {
+  .game-sizer,.game-card { width:100%; }
+  .gutter-sizer { width:0; }
+  .game-info,.full-game-grid .game-info,.home-games .game-card:last-child .game-info { padding:17px 17px 13px; }
+  .game-title-row h3,.home-games .game-card:last-child .game-title-row h3 { font-size:15px; }
+  .game-info>p { font-size:10px; }
+  .game-reward { font-size:9px; }
+  .card-objective { font-size:10px; }
+  .game-card-bottom .text-button { font-size:11px; }
+  .adoption-intro h1 { font-size:30px; }
+}
+@media(prefers-contrast:more) {
+  :root { --ink:#213820; }
+  .page-header p,.game-info>p,.card-objective,.pet-species,.next-unlock { color:#425d38; }
+}
+.game-loading.load-failed > .icon { width:42px; height:42px; color:var(--sage-dark); margin-bottom:18px; }
+.game-loading.load-failed .text-button { margin-top:12px; }

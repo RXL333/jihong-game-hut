@@ -1,0 +1,14 @@
+{
+  "generator": "built-in image_gen",
+  "file": "assets/room-day.png",
+  "source": "exec-9507496e-cf39-4723-a198-45ad670297a3.png",
+  "prompt": "Use case: illustration-story. The attached character image is ONLY a reference for fine hand-painted gouache texture and warm cozy lighting, do NOT depict any cat or other animal in the output. Create an exquisite inviting cozy little room background for a pet game, LANDSCAPE 3:2 full-bleed illustration. Warm ivory plaster walls, honey oak plank floor, a generous garden-view window upper left with linen curtain and soft afternoon sun, a few sage-green leafy houseplants around periphery, low cream upholstered armchair to the right, tiny side table and a couple of books, restrained original picture-book interior details. Very large pale sage and cream oval woven rug on the lower central half. The CENTER and FOREGROUND are open empty floor and rug for overlaying a separately animated pet at horizontal 50%, baseline vertical 83%. Eye-level view gently looking down to see spacious floor; keep central rug clear. Delicate painted textures, gentle brushwork, warm soft volumetric natural light, cream, pale sage and light wood palette. Sophisticated, beautifully detailed, calm and healing, airy editorial composition. NO animals, NO people, NO pets, NO text, NO letters, NO UI, NO logo, NO frame, NO watermarks. No large central furniture, no busy clutter. Beautiful complete room environment, not a thumbnail collage.",
+  "reference": "design/pets/v1/orange-tabby-character-sheet-v1.png",
+  "music": {
+    "title": "Childhood",
+    "artist": "Scott Buckley",
+    "source": "https://www.scottbuckley.com.au/library/childhood/",
+    "license": "CC BY 4.0",
+    "edits": "none"
+  }
+}

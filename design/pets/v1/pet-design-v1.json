@@ -1,0 +1,49 @@
+{
+  "project": "鸡泓的游戏小屋",
+  "version": 1,
+  "createdDate": "2026-10-26",
+  "delivery": "两只宠物的角色定妆图，供用户确认形象",
+  "reviewStatus": "形象已由用户确认，沿用此版开展网站与动作制作。",
+  "agreedDirection": {
+    "artStyle": "细腻手绘插画、柔软毛绒质感、温暖治愈",
+    "pets": [
+      "橘色狸花猫",
+      "焦糖棕腊肠狗"
+    ],
+    "adoption": "初次二选一，可以起名",
+    "hosting": "GitHub Pages 静态部署",
+    "save": "免登录，保存在当前浏览器",
+    "platforms": "手机优先，同时适配电脑",
+    "satiety": {
+      "min": 0,
+      "max": 100,
+      "meaning": "0为饥饿，100为吃饱",
+      "hourlyChange": -3,
+      "ordinarySnackChange": 25
+    },
+    "hydration": {
+      "min": 0,
+      "max": 100,
+      "meaning": "0为口渴，100为喝足",
+      "hourlyChange": -4,
+      "waterChange": 30
+    },
+    "affection": "按推荐初稿设计：Lv.1至Lv.16，每只宠物5个基础动作与15个逐级解锁动作；好感不因离线而下降",
+    "progression": "约一个月的活跃游玩解锁全部动作，具体平衡在网站制作阶段调整"
+  },
+  "generationMode": "内置 image_gen 图像生成工具",
+  "assets": [
+    {
+      "pet": "橘色狸花猫",
+      "file": "orange-tabby-character-sheet-v1.png",
+      "source": "exec-859fc76d-4351-42b0-a6ce-56afbad7a974.png",
+      "finalPrompt": "Use case: stylized-concept.\nAsset type: polished character identity / model reference sheet for an original cozy browser pet game called 鸡泓的游戏小屋. This is the first pet design for user approval, not an animation sprite sheet.\nPrimary request: design an exceptionally charming orange domestic tabby kitten with refined hand-painted illustration and soft tactile short fur, emotionally warm and soothing. Beautiful professional game character art.\nBackdrop: plain warm ivory paper with very subtle natural paper grain, generous clean negative space, gentle pale ground shadows beneath full-body drawings. Landscape canvas, balanced art direction.\nCharacter identity: a small rounded orange domestic shorthair tabby, warm honey ginger fur, distinct soft cinnamon M marking on forehead, two short curved cheek stripes per cheek, neat darker stripes along sides and ringed tail, pale creamy muzzle, chin, chest and small paws. Round cheeks, tiny muted rose pink nose, small triangular ears with soft pink interiors, short rounded paws, plump but anatomically readable cat torso, naturally curved medium length tail. Large gentle hazel amber eyes with clear dark pupils and delicate highlights. Curious affectionate expression, closed little mouth. Cute youthful proportions while unmistakably feline.\nStyle: fine digital gouache and colored-pencil detailing, exquisite soft individual fur edges and restrained painterly texture, soft volumetric shading, luminous warm daylight, low-contrast cinnamon contours. Warm cream, apricot and ginger palette. A premium illustrated picture-book character, slightly dimensional hand-painted illustration rather than plastic 3D or a plush toy photograph. Maintain clear silhouettes that can later become small mobile game sprites.\nSheet composition: one large hero full-body three-quarter seated view occupying the left half; on the upper right, two smaller full-body turnaround views, one strict side view standing on four paws and one rear three-quarter view clearly showing tail rings and back stripes; on the lower right, three neatly spaced face studies of the exact same kitten: calm curious face, eyes closed with delighted smile, sleepy half-closed eyes. No panels cutting through drawings. All six depictions share identical character design and stripe placement. Keep all bodies, ears, tails and paws fully inside frame with breathing room.\nConstraints: original character; no collar, costume, bow or accessories; no props, furniture or scenery; no text, numbers, logos or watermark; no humans or other species. No overly enormous eyes, no long-haired Persian coat, no harsh outlines, no extra limbs, no cropped tails. Prioritize appealing face, fine fur, consistent anatomy, and a soothing high-quality character design."
+    },
+    {
+      "pet": "腊肠狗",
+      "file": "dachshund-character-sheet-v1.png",
+      "source": "exec-b633b4cf-7572-41a5-b27e-2e5b7d24d8d9.png",
+      "finalPrompt": "Use case: stylized-concept.\nAsset type: polished character identity / model reference sheet for the second original pet in a cozy browser game called 鸡泓的游戏小屋. This is a character design for user approval, not animation frames.\nPrimary request: design an exceptionally lovable small caramel-brown dachshund puppy in refined hand-painted illustration with delicate soft short fur. This pet belongs to the same warm picture-book art direction as a honey-orange tabby kitten.\nBackdrop: plain warm ivory paper with very subtle natural paper grain, generous clean negative space, pale soft ground shadows beneath full-body drawings. Landscape canvas.\nCharacter identity: a true dachshund puppy with a recognizably elongated low-slung body, very short sturdy legs and small rounded paws, smooth warm caramel/chestnut brown coat, subtly darker chocolate-brown long floppy ears and back, gentle lighter toffee muzzle, chest and paws. Its puppy head is slightly enlarged for charm but the muzzle is still distinctly long and tapered like a dachshund, with a small soft shiny black nose. Large soulful dark chocolate brown eyes, delicate glints, slightly lifted inner brows, gentle affectionate eager face. Long soft rounded hanging ears extending below its jaw. A slender gently upward curved tail. Capture the endearing contrast of a long little sausage body and short legs.\nStyle: fine digital gouache with colored-pencil detail, delicate fine short fur around edges, silky velvety ear texture, very soft volumetric shading and restrained painterly paper texture. Luminous warm daylight with honey and warm cocoa tones. Sophisticated illustrated picture-book character with the same delicacy and tactile fur detail as a premium orange-tabby-kitten illustration. Slightly dimensional hand-painted drawing, not shiny CGI, not a plastic toy and not a stuffed-animal photograph.\nSheet composition: one large hero full-body three-quarter seated puppy view occupying the left half, head very gently tilted, all paws and complete tail visible; on the upper right, two smaller full-body turnaround views, one strict side standing view clearly showing the elongated dachshund torso (approximately 2.5 times as long as chest height) and stubby legs, and one rear three-quarter standing view showing ears, short legs and slender curved tail; on the lower right, three neatly spaced face studies of the exact same puppy: calm curious face with mouth closed, delighted face with soft open smile and just a tiny pink tongue, sleepy half-closed eyes. All six depictions are the SAME dachshund with identical anatomy and coat colors. Clear non-overlapping drawings, generous breathing room and fully contained ears, bodies, legs and tails.\nConstraints: original character, no collar, scarf, clothes, bow or accessories; no toys, props, scenery or furniture; no words, numbers, labels, logos or watermark; no humans or other animals. Keep dachshund breed identity in every view, not a Labrador, golden retriever, spaniel or teddy bear. No curly fur, no overly fluffy long coat, no round stubby muzzle, no extra legs, no human gestures. Prioritize a beautiful, memorable affectionate face and warm tactile hand-painted finish."
+    }
+  ]
+}
