@@ -92,7 +92,7 @@ export function care(input: Save, action: Care, now = Date.now()): Change {
 }
 export function gameProgress(input: Save, gameId: string, roundId: string, metrics: Metrics, now = Date.now()): Change {
   const state = advanceTime(input, now), game = GAMES.find(value => value.id === gameId);
-  if (!state.pet || !game || !/^[a-zA-Z0-9._:-]{1,120}$/.test(roundId)) return result(state, false, '无效的游戏记录。');
+  if (!game || !/^[a-zA-Z0-9._:-]{1,120}$/.test(roundId)) return result(state, false, '无效的游戏记录。');
   const roundKey = `${gameId}:${roundId}`;
   if (!state.playedRounds.includes(roundKey)) { state.playedRounds.push(roundKey); state.gamesPlayed += 1; }
   const added: PendingReward[] = [];

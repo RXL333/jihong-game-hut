@@ -1,5 +1,6 @@
 import './style.css';
 import './glass-theme.css';
+import './tutorial.css';
 import { ACTIONS, PETS, actionName } from './data/pets.ts';
 import type { ActionId, PetKind } from './data/pets.ts';
 import { GAMES, missionReached } from './data/games.ts';
@@ -14,16 +15,19 @@ import { PetRenderer, asset } from './ui/pet-renderer.ts';
 import { HutAudio } from './ui/audio.ts';
 import { mountGlassMaterial } from './ui/glass.ts';
 import { mountGameWaterfalls } from './ui/masonry.ts';
+import { pageFromHash, rememberTutorial, tutorialSeen } from './core/onboarding.ts';
+import { HutTutorial } from './ui/tutorial.ts';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const initial = loadSave(localStorage);
 let state = initial.state;
-let route = ['home', 'games', 'bag', 'album'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+let route = pageFromHash(location.hash);
 let selectedPet: PetKind = 'cat', adoptName: string = PETS.cat.nickname, albumTab = 'actions', gameFilter = 'all';
 let saveProblem = initial.notice, savingFailed = false;
 let renderers: PetRenderer[] = [], roomRenderer: PetRenderer | undefined;
 let idleTimer = 0, actionTimer = 0;
 let disposeGlass = () => {}, disposeWaterfalls = () => {};
+let tutorial: HutTutorial | undefined;
 let active: { game: GameDefinition; session: Session; overlay: HTMLDivElement; frame: HTMLIFrameElement; metrics: Metrics; ready: boolean; closing: boolean; loadTimer: number; disposeGlass: () => void } | null = null;
 const audio = new HutAudio();
 document.documentElement.style.setProperty('--room-image', 'url("' + asset('assets/room-day.png') + '")');
@@ -68,17 +72,24 @@ function mountPets(root: ParentNode = app) {
   });
 }
 function navHtml() {
-  return '<aside class="sidebar"><a class="brand" href="#home" aria-label="鸡泓的游戏小屋，回到小屋"><span class="brand-mark">' + icon('paw') + '</span><span>鸡泓的<br><strong>游戏小屋</strong><small>A LITTLE HAPPY PLACE</small></span></a><div class="nav-caption">把快乐，慢慢收藏</div><nav aria-label="主要导航">' +
+  return '<aside class="sidebar"><a class="brand" href="#games" aria-label="鸡泓的游戏小屋，回到游戏乐园"><span class="brand-mark">' + icon('paw') + '</span><span>鸡泓的<br><strong>游戏小屋</strong><small>A LITTLE HAPPY PLACE</small></span></a><div class="nav-caption">把快乐，慢慢收藏</div><nav aria-label="主要导航">' +
     [['home', 'home', '我的小屋'], ['games', 'game', '游戏乐园'], ['bag', 'bag', '小小背包'], ['album', 'book', '成长图鉴']].map(([id, symbol, label]) => '<button class="nav-item ' + (route === id ? 'active' : '') + '" data-nav="' + id + '" aria-current="' + (route === id ? 'page' : 'false') + '">' + icon(symbol) + '<span>' + label + '</span>' + (id === 'bag' && state.pending.length ? '<b class="nav-dot">' + state.pending.length + '</b>' : '') + '</button>').join('') +
     '</nav><div class="sidebar-bottom"><div class="little-flower">' + icon('flower') + '</div><p>好好玩，也好好生活。</p><small>每一份陪伴，都有回响</small></div></aside>';
 }
 function header(title: string, subtitle: string) {
-  return '<header class="page-header"><div><a class="mobile-brand" href="#home">' + icon('paw') + '<span>鸡泓的游戏小屋</span></a><div class="eyebrow">' + icon('sun') + ' ' + dateText(Date.now(), { month: 'long', day: 'numeric', weekday: 'long' }) + ' · 小日子，慢慢过</div><h1>' + title + '</h1><p>' + subtitle + '</p></div><div class="header-tools"><button class="music-toggle ' + (state.settings.music ? 'is-on' : '') + '" data-command="music" aria-label="' + (state.settings.music ? '关闭小屋音乐' : '开启小屋音乐') + '">' + icon('music') + '<span>' + (state.settings.music ? '音乐陪伴中' : '听点轻音乐') + '</span><i class="music-dot"></i></button><button class="icon-button" data-command="settings" aria-label="小屋设置">' + icon('settings') + '</button></div></header>';
+  return '<header class="page-header"><div><a class="mobile-brand" href="#games">' + icon('paw') + '<span>鸡泓的游戏小屋</span></a><div class="eyebrow">' + icon('sun') + ' ' + dateText(Date.now(), { month: 'long', day: 'numeric', weekday: 'long' }) + ' · 小日子，慢慢过</div><h1>' + title + '</h1><p>' + subtitle + '</p></div><div class="header-tools"><button class="icon-button" data-command="tutorial" aria-label="查看新手指引" title="新手指引">' + icon('book') + '</button><button class="music-toggle ' + (state.settings.music ? 'is-on' : '') + '" data-command="music" aria-label="' + (state.settings.music ? '关闭小屋音乐' : '开启小屋音乐') + '">' + icon('music') + '<span>' + (state.settings.music ? '音乐陪伴中' : '听点轻音乐') + '</span><i class="music-dot"></i></button><button class="icon-button" data-command="settings" aria-label="小屋设置">' + icon('settings') + '</button></div></header>';
 }
 function adoptionHtml() {
-  return '<div class="adoption-page"><header class="adoption-header"><a class="adoption-brand" href="#">' + icon('paw') + '<span>鸡泓的游戏小屋</span></a><span class="soft-note">' + icon('leaf') + ' 一个可以慢慢快乐的地方</span></header><main class="adoption-main"><div class="adoption-intro"><span class="eyebrow">一段毛茸茸的故事，即将开始</span><h1>给小小的它，<br>一个<span>有你的家。</span></h1><p>玩你喜欢的小游戏，带回一点小零食。<br>把普普通通的每一天，过成一起长大的日子。</p></div><form id="adopt-form" class="adoption-card"><div class="adoption-steps"><span class="current">01 选择小伙伴</span><i></i><span class="current">02 取个名字</span><i></i><span>03 一起回家</span></div><div class="pet-choices">' +
+  return '<div class="adoption-page"><header class="adoption-header"><a class="adoption-brand" href="#games">' + icon('back') + '<span>返回游戏乐园</span></a><span class="soft-note">' + icon('leaf') + ' 一个可以慢慢快乐的地方</span></header><main class="adoption-main"><div class="adoption-intro"><span class="eyebrow">一段毛茸茸的故事，即将开始</span><h1>给小小的它，<br>一个<span>有你的家。</span></h1><p>玩你喜欢的小游戏，带回一点小零食。<br>把普普通通的每一天，过成一起长大的日子。</p></div><form id="adopt-form" class="adoption-card"><div class="adoption-steps"><span class="current">01 选择小伙伴</span><i></i><span class="current">02 取个名字</span><i></i><span>03 一起回家</span></div><div class="pet-choices">' +
     (['cat', 'dog'] as PetKind[]).map(kind => '<button type="button" class="pet-choice ' + (selectedPet === kind ? 'selected' : '') + '" data-choose="' + kind + '" aria-pressed="' + (selectedPet === kind) + '">' + (selectedPet === kind ? '<span class="choice-check">' + icon('check') + '</span>' : '') + petCanvas(kind) + '<strong>' + PETS[kind].name + '</strong><small>' + PETS[kind].trait + '</small></button>').join('') +
     '</div><label class="name-label" for="pet-name">以后，就这样叫它吧 <span>可随时改名</span></label><div class="name-field">' + icon('edit') + '<input id="pet-name" name="pet-name" type="text" autocomplete="off" maxlength="24" value="' + esc(adoptName) + '" placeholder="给它起一个喜欢的名字" required><span>最多12字</span></div><button class="primary-button adopt-button" type="submit">就接你回家 ' + icon('arrow') + '</button><p class="local-note">' + icon('heart') + ' 无需登录 · 进度保存在当前浏览器 · 随时可以导出备份</p></form></main><footer class="adoption-footer">晴空、甜西瓜、小牧场，还有一个等你回来的小伙伴。</footer></div>';
+}
+function guestPetHtml(album = false) {
+  return header(album ? '一起长大的小证据' : '有个小伙伴，在等你回家', album ? '亲近一点，就多一份毛茸茸的小惊喜。' : '橘色狸花猫和焦糖棕腊肠狗，哪一只会成为你的小伙伴呢？') +
+    (album ? '<section class="album-summary"><div class="album-heart">' + icon('book') + '</div><div><strong>每只宠物，20 个亲近的小动作</strong><p>5 个基础动作 · 15 个好感升级动作</p></div></section>' : '') +
+    '<section class="panel guest-pet-panel"><div class="guest-pets">' + petCanvas('cat') + petCanvas('dog') + '</div><h2>' + (album ? '把成长，收藏成一个个小动作' : '小屋的阳光，已经准备好了') + '</h2><p>' + (album ? '领养后，这里会记录它学会的每个动作。好感每升一级，解锁一个新动作；成长手账替你收藏领养、升级与成就。' : '选择一只小伙伴，给它起名。把游戏里带回的零食和清水喂给它，摸摸它，再一起慢慢长大。') + '</p>' +
+    (album ? '<div class="guest-album-counts"><span><b>20</b>每只宠物的动作</span><span><b>5</b>初见就会</span><span><b>15</b>亲近后解锁</span></div>' : '') +
+    '<div class="guest-actions"><button class="primary-button" data-nav="adopt">挑选我的小伙伴 ' + icon('paw') + '</button><button class="text-button" data-nav="games">先去玩一会儿 ' + icon('arrow') + '</button></div></section>';
 }
 function metric(label: string, value: number, symbol: string, color: string) {
   const n = Math.round(value);
@@ -88,6 +99,7 @@ function careButtons() {
   return '<div class="care-buttons"><button class="care-button food" data-care="snack" ' + (!state.inventory.snack ? 'disabled' : '') + '>' + icon('snack') + '<strong>喂零食</strong><small>剩余 ' + state.inventory.snack + ' 份</small></button><button class="care-button drink" data-care="water" ' + (!state.inventory.water ? 'disabled' : '') + '>' + icon('water') + '<strong>添点水</strong><small>剩余 ' + state.inventory.water + ' 份</small></button><button class="care-button touch" data-care="pet">' + icon('heart') + '<strong>摸摸它</strong><small>给一点温柔</small></button></div>';
 }
 function homeHtml() {
+  if (!state.pet) return guestPetHtml();
   const pet = state.pet!, level = petLevel(), days = Math.floor(Math.max(0, Date.now() - pet.adoptedAt) / 86400000) + 1;
   const mood = Math.min(pet.satiety, pet.hydration) < 20 ? '想要你的照顾' : Math.min(pet.satiety, pet.hydration) > 75 ? '被爱包围，心情很好' : '有你在，就很安心';
   return header('有你在的小日子', '欢迎回家。去玩一会儿，也别忘了抱抱你的小伙伴。') +
@@ -104,6 +116,7 @@ function gameCard(game: GameDefinition) {
 function gamesHtml() {
   const filtered = GAMES.filter(game => gameFilter === 'all' || game.id === gameFilter);
   return header('把快乐，玩成小收获', '选一款喜欢的小游戏。达成小目标，就能给它带点好吃的回来。') +
+    (!state.pet ? '<section class="panel guest-banner"><div>' + icon('paw') + '<span><strong>先玩一会儿，也可以接个小伙伴回家</strong><p>游戏奖励会先替你收好，领养后就能喂给它。</p></span></div><button class="secondary-button" data-nav="adopt">去领养 ' + icon('arrow') + '</button></section>' : '') +
     '<div class="games-banner"><div>' + icon('game') + '<span><strong>快乐没有标准答案</strong><small>基础奖励每天任选 3 份，同一款游戏也可以。</small></span></div><span class="pill">' + state.daily.basic + ' / 3 份今日基础奖励</span></div><div class="filter-row" role="group" aria-label="筛选游戏">' + [['all', '全部游戏'], ['kart', '轻快竞速'], ['watermelon', '水果合成'], ['meadow', '叠层三消']].map(([id, name]) => '<button class="filter-chip ' + (gameFilter === id ? 'active' : '') + '" data-filter="' + id + '" aria-pressed="' + (gameFilter === id) + '">' + name + '</button>').join('') + '</div><div class="game-grid full-game-grid"><div class="game-sizer"></div><div class="gutter-sizer"></div>' + filtered.map(gameCard).join('') + '</div><section class="how-it-works"><h2>小零食，是这样带回家的</h2><div>' +
     [['game', '01', '玩一款小游戏', '选择喜欢的，就从一小局开始。'], ['flag', '02', '完成一个小目标', '分数、完赛或消除组数都会自动记录。'], ['gift', '03', '把奖励带回家', '收进背包，再喂给你的小伙伴。']].map(([symbol, number, title, text]) => '<article><span class="step-icon">' + icon(symbol) + '</span><small>' + number + '</small><h3>' + title + '</h3><p>' + text + '</p></article>').join('') + '</div></section>';
 }
@@ -113,6 +126,7 @@ function rewardsHtml() {
 }
 function bagHtml() {
   return header('小小背包，装满关心', '把游戏里收获的快乐，留一份给最喜欢的小伙伴。') +
+    (!state.pet ? '<div class="soft-tip guest-bag-note">' + icon('paw') + '<p>可以先收集奖励。准备好时，<button class="text-button" data-nav="adopt">接一只小伙伴回家</button>，再把关心喂给它。</p></div>' : '') +
     '<div class="inventory-grid">' + [
       ['snack', 'snack', '小零食', '饱腹度 +25 · 好感 +10', '一口小满足，日子甜一点。'],
       ['feast', 'sparkle', '丰盛零食', '饱腹度 +25 · 好感 +15', '今天，给它多一点小惊喜。'],
@@ -122,6 +136,7 @@ function bagHtml() {
     GAMES.map(game => { const mission = game.missions.find(m => m.kind === 'once')!, unlocked = state.badges.includes(game.id + ':' + mission.id); return '<article class="achievement ' + (unlocked ? 'earned' : '') + '"><span>' + icon(unlocked ? game.icon : 'lock') + '</span><h3>' + mission.title + '</h3><p>' + mission.detail + '</p><small>' + (unlocked ? '已经收藏' : '等你来发现') + '</small></article>'; }).join('') + '</div></section>';
 }
 function albumHtml() {
+  if (!state.pet) return guestPetHtml(true);
   const pet = state.pet!, level = petLevel(), unlocked = ACTIONS.filter(action => action.level <= level.level).length;
   return header('一起长大的小证据', '从第一次眨眼，到把肚皮交给你。每一点亲近，都有自己的模样。') +
     '<div class="album-summary"><div class="album-heart">' + icon('heart') + '</div><div><strong>' + esc(pet.name) + '的成长小册</strong><p>好感 Lv.' + level.level + ' · 已学会 ' + unlocked + ' / 20 个动作</p></div><span class="pill">' + (level.level === 16 ? '最亲密的伙伴' : '下一级，还有新的小惊喜') + '</span></div><div class="filter-row" role="tablist" aria-label="成长图鉴内容"><button class="filter-chip ' + (albumTab === 'actions' ? 'active' : '') + '" data-album="actions" role="tab" aria-selected="' + (albumTab === 'actions') + '">动作图鉴 <small>' + unlocked + '/20</small></button><button class="filter-chip ' + (albumTab === 'diary' ? 'active' : '') + '" data-album="diary" role="tab" aria-selected="' + (albumTab === 'diary') + '">成长手账</button></div>' +
@@ -132,12 +147,14 @@ function render() {
   disposeWaterfalls(); disposeGlass();
   clearTimeout(idleTimer); renderers.forEach(renderer => renderer.destroy()); renderers = []; roomRenderer = undefined;
   document.documentElement.classList.toggle('reduce-motion', motionReduced());
-  if (!state.pet) app.innerHTML = adoptionHtml();
+  if (route === 'adopt' && state.pet) route = 'games';
+  if (route === 'adopt') app.innerHTML = adoptionHtml();
   else app.innerHTML = navHtml() + '<main class="main-content">' + (saveProblem ? '<div class="save-notice" role="alert">' + icon('download') + '<span>' + esc(saveProblem) + '</span><button class="text-button" data-command="export">导出备份</button></div>' : '') + (route === 'games' ? gamesHtml() : route === 'bag' ? bagHtml() : route === 'album' ? albumHtml() : homeHtml()) + '<footer class="page-footer"><span>' + icon('paw') + ' 鸡泓的游戏小屋</span><span>让快乐有处可去，让陪伴慢慢长大。</span></footer></main>';
   mountPets(); audio.configure(state.settings.music, state.settings.volume);
   disposeGlass = mountGlassMaterial(app); disposeWaterfalls = mountGameWaterfalls(app);
   app.querySelectorAll<HTMLImageElement>('.game-cover img').forEach(image => { image.onerror = () => image.classList.add('failed'); });
   if (roomRenderer && !active) scheduleIdle();
+  tutorial?.refresh();
 }
 function scheduleIdle() {
   clearTimeout(idleTimer);
@@ -156,6 +173,7 @@ function petAction(id: ActionId, text?: string) {
   actionTimer = window.setTimeout(() => { roomRenderer?.setAction('idle'); scheduleIdle(); }, id === 'eat' || id === 'drink' ? 7000 : 4500);
 }
 function performCare(action: Care) {
+  if (!state.pet) { route = 'adopt'; location.hash = 'adopt'; render(); toast('先挑一只喜欢的小伙伴，再把关心送给它。'); return; }
   audio.unlock(); const result = commit(save => care(save, action));
   toast(result.message + (result.experience ? ' 好感 +' + result.experience : ''), action === 'water' ? 'water' : 'heart');
   if (result.ok) petAction(action === 'water' ? 'drink' : action === 'pet' ? (petLevel().level >= 10 ? 'nuzzle' : 'idle') : 'eat', action === 'water' ? '喝足水啦，谢谢你。' : action === 'pet' ? '最喜欢被你摸摸了。' : '啊呜，好好吃！');
@@ -184,6 +202,11 @@ function showLevelUp() {
 }
 function openSettings() {
   const dialog = openDialog(dialogHead('小屋设置', '把这里，调成你喜欢的样子。') + '<div class="settings-content"><section><h3>' + icon('music') + ' 声音与画面</h3><label class="setting-row"><span>小屋背景音乐<small>进入游戏和切到后台时暂停</small></span><input type="checkbox" id="music-setting" ' + (state.settings.music ? 'checked' : '') + '></label><label class="setting-row volume-setting"><span>音乐音量</span><input type="range" id="volume-setting" min="0" max="100" value="' + Math.round(state.settings.volume * 100) + '" aria-label="音乐音量"></label><label class="setting-row"><span>轻柔动态<small>减少动画，宠物保留静态动作画面</small></span><input type="checkbox" id="motion-setting" ' + (state.settings.reducedMotion ? 'checked' : '') + '></label></section><section><h3>' + icon('bag') + ' 好好保管小日子</h3><p class="settings-description">进度保存在当前浏览器。导出一份备份，换设备时也能把小伙伴一起带走。</p><div class="backup-actions"><button class="secondary-button" data-command="export">' + icon('download') + ' 导出备份</button><button class="secondary-button" data-command="import">' + icon('upload') + ' 导入备份</button></div><input id="backup-file" type="file" accept=".json,application/json" hidden><small class="backup-foot">清理站点数据前，记得先保存备份。</small></section><section class="music-credit"><h3>' + icon('leaf') + ' 关于小屋</h3><p>原创小游戏与毛茸茸的陪伴，来自鸡泓的游戏小屋。</p><p>音乐：<a href="https://www.scottbuckley.com.au/library/childhood/" target="_blank" rel="noopener">Childhood — Scott Buckley</a><br>Released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> · 原曲未经修改<br><a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener">www.scottbuckley.com.au</a></p></section></div>');
+  const guideSection = document.createElement('section'); guideSection.className = 'tutorial-launch';
+  guideSection.innerHTML = '<div><h3>' + icon('book') + ' 小屋新手指引</h3><p>再逛一圈，了解游戏、奖励和毛茸茸的陪伴。</p></div><button class="secondary-button" data-command="tutorial">重新查看新手指引</button>';
+  dialog.querySelector('.settings-content')!.prepend(guideSection);
+  const disposeGuideGlass = mountGlassMaterial(guideSection);
+  dialog.addEventListener('close', disposeGuideGlass, { once: true });
   dialog.querySelector('#music-setting')?.addEventListener('change', event => { audio.unlock(); changeSetting('music', (event.target as HTMLInputElement).checked); });
   dialog.querySelector('#motion-setting')?.addEventListener('change', event => changeSetting('reducedMotion', (event.target as HTMLInputElement).checked));
   dialog.querySelector('#volume-setting')?.addEventListener('input', event => { audio.unlock(); changeSetting('volume', Number((event.target as HTMLInputElement).value) / 100, false); });
@@ -239,7 +262,7 @@ function loadActiveGame() {
   current.loadTimer = window.setTimeout(() => gameLoadFailed(current), 15000);
 }
 function openGame(id: string) {
-  const game = GAMES.find(g => g.id === id); if (!game || !state.pet || active) return;
+  const game = GAMES.find(g => g.id === id); if (!game || active) return;
   audio.unlock(); audio.setGameOpen(true); clearTimeout(idleTimer);
   const overlay = document.createElement('div'); overlay.className = 'game-overlay ' + game.orientation; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-label', game.title);
   overlay.innerHTML = '<header class="game-topbar"><button class="back-to-hut" data-command="exit-game">' + icon('back') + '<span>返回小屋</span></button><strong>' + game.title + '</strong><div><button class="game-tasks-toggle secondary-button small" data-command="toggle-tasks">' + icon('gift') + ' 小目标 <b class="pending-count">' + state.pending.length + '</b></button><button class="icon-button" data-command="fullscreen" aria-label="全屏游戏">' + icon('full') + '</button></div></header><div class="game-play-area"><div class="frame-wrap"><iframe title="' + game.title + '" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe><div class="game-loading"><span class="loading-paw">' + icon('paw') + '</span><strong>正在打开' + game.title + '</strong><p>小小的快乐，马上就好。</p><button class="text-button" data-command="reload-game">加载较久？点这里重新打开</button></div>' + (game.orientation === 'landscape' ? '<div class="rotate-hint">' + icon('full') + '<h2>横过来，看见更大的晴空</h2><p>这款游戏更适合手机横屏游玩。</p><button class="primary-button" data-command="dismiss-rotate">继续进入游戏</button></div>' : '') + '</div><aside class="game-tasks"><button class="icon-button close-tasks" data-command="toggle-tasks" aria-label="收起小目标">' + icon('close') + '</button><div class="game-tasks-content"></div></aside></div>';
@@ -279,7 +302,7 @@ document.addEventListener('visibilitychange', () => { if (active) sendGame(docum
 document.addEventListener('click', event => {
   const target = (event.target as Element).closest<HTMLElement>('button, a[data-nav]'); if (!target) return;
   audio.unlock();
-  if (target.dataset.nav) { route = target.dataset.nav; location.hash = route; if (location.hash.slice(1) === route) render(); window.scrollTo({ top: 0 }); return; }
+  if (target.dataset.nav) { route = pageFromHash(target.dataset.nav); location.hash = route; if (location.hash.slice(1) === route) render(); window.scrollTo({ top: 0 }); return; }
   if (target.dataset.choose) { const kind = target.dataset.choose as PetKind; if (adoptName === PETS[selectedPet].nickname) adoptName = PETS[kind].nickname; selectedPet = kind; render(); return; }
   if (target.dataset.care) { performCare(target.dataset.care as Care); return; }
   if (target.dataset.play) { openGame(target.dataset.play); return; }
@@ -293,6 +316,7 @@ document.addEventListener('click', event => {
     return;
   }
   const command = target.dataset.command;
+  if (command === 'tutorial') { document.querySelector<HTMLDialogElement>('dialog')?.close(); tutorial?.start(); }
   if (command === 'music') { changeSetting('music', !state.settings.music); toast(state.settings.music ? '让音乐，轻轻陪着你。' : '安安静静的，也很好。', 'music'); }
   if (command === 'settings') openSettings();
   if (command === 'close-dialog') document.querySelector<HTMLDialogElement>('dialog')?.close();
@@ -319,7 +343,7 @@ document.addEventListener('submit', event => {
 window.addEventListener('hashchange', () => {
   if (location.hash.startsWith('#play-') && active) return;
   if (active) closeGame(true);
-  const next = location.hash.slice(1); route = ['home', 'games', 'bag', 'album'].includes(next) ? next : 'home'; render();
+  route = pageFromHash(location.hash); render();
 });
 window.addEventListener('storage', event => { if (event.key === SAVE_KEY && event.newValue) { const incoming = parseBackup(event.newValue); if (incoming) { state = advanceTime(incoming); render(); paintGameTasks(); } } });
 window.addEventListener('keydown', event => { if (event.key === 'Escape' && active && !document.querySelector('dialog[open]')) closeGame(); });
@@ -330,4 +354,10 @@ setInterval(() => {
 }, 60000);
 document.addEventListener('pet-image-error', () => { if (!document.querySelector('.asset-error')) { const node = document.createElement('div'); node.className = 'asset-error'; node.setAttribute('role', 'status'); node.textContent = '宠物图片暂未加载成功，请检查网络后刷新。养成进度仍会保存。'; app.prepend(node); } });
 if (location.hash.startsWith('#play-')) history.replaceState(null, '', '#games');
+if (!location.hash || route === 'games' && location.hash !== '#games') history.replaceState(null, '', '#games');
+tutorial = new HutTutorial({
+  navigate: page => { route = page; gameFilter = 'all'; history.replaceState(null, '', '#' + page); render(); },
+  finish: () => { rememberTutorial(localStorage); route = 'games'; history.replaceState(null, '', '#games'); render(); window.scrollTo({ top: 0 }); app.querySelector<HTMLButtonElement>('[data-command="tutorial"]')?.focus({ preventScroll: true }); },
+});
 render(); if (initial.notice) toast(initial.notice, 'download');
+if (!tutorialSeen(localStorage)) requestAnimationFrame(() => tutorial?.start());

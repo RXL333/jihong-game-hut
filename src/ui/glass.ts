@@ -6,7 +6,7 @@ import type { LiquidGlassHandle, LiquidGlassOptions } from '@surdeddd/liquidglas
 configure({ mapSide: 64, caPasses: 1, maxDpr: 1.5 });
 const surfaces = [
   '.sidebar', '.pet-status', '.supply-strip', '.pending-strip', '.game-card',
-  '.games-banner', '.how-it-works article', '.inventory-card', '.panel',
+  '.games-banner', '.how-it-works article', '.inventory-card', '.panel', '.tutorial-card',
   '.soft-tip', '.achievement', '.album-summary', '.action-card',
   '.adoption-card', '.pet-choice', '.name-field', '.dialog', '.toast',
   '.game-topbar', '.game-tasks', '.mission', '.room-label', '.room-day',
@@ -28,7 +28,7 @@ export function mountGlassMaterial(root: ParentNode): () => void {
     const options = { ...material };
     if (element.matches('.primary-button,.nav-item.active,.filter-chip.active')) {
       Object.assign(options, { blur: 16, shadow: .13, specular: 1 });
-    } else if (element.matches('.dialog,.adoption-card')) {
+    } else if (element.matches('.dialog,.adoption-card,.tutorial-card')) {
       Object.assign(options, { blur: 34, shadow: .2 });
     } else if (element.matches('.sidebar,.game-topbar,.game-tasks')) {
       Object.assign(options, { blur: 26, shadow: .13 });
